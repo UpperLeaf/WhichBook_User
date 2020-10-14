@@ -16,6 +16,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin().disable().csrf().disable()
                 .authorizeRequests(authorize -> authorize
                         .mvcMatchers("/auth/**").permitAll()
+                        .mvcMatchers("/user/signup").permitAll()
                         .anyRequest().authenticated());
     }
 }
