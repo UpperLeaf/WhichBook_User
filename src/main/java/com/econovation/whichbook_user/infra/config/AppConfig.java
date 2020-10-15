@@ -1,4 +1,4 @@
-package com.econovation.whichbook_user.config;
+package com.econovation.whichbook_user.infra.config;
 
 import org.springframework.context.annotation.Configuration;
 

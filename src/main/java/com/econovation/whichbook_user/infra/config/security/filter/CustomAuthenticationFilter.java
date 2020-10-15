@@ -1,4 +1,4 @@
-package com.econovation.whichbook_user.config.security.filter;
+package com.econovation.whichbook_user.infra.config.security.filter;
 
 import com.econovation.whichbook_user.domain.user.dto.SignUpRequestDto;
 import com.fasterxml.jackson.databind.ObjectMapper;

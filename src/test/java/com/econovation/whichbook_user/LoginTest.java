@@ -49,7 +49,7 @@ public class LoginTest {
         mockMvc.perform(post("/user/login")
                 .content(json)
                 .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(cookie().exists("TEST_TOKEN_ABCD"));
+                .andExpect(cookie().exists("JWT-TOKEN"));
     }
 
 

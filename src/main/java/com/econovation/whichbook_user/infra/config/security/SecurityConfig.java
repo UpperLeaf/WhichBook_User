@@ -1,8 +1,10 @@
-package com.econovation.whichbook_user.config.security;
+package com.econovation.whichbook_user.infra.config.security;
 
-import com.econovation.whichbook_user.config.security.filter.CustomAuthenticationFilter;
-import com.econovation.whichbook_user.config.security.handler.CustomAuthenticationSuccessHandler;
-import com.econovation.whichbook_user.config.security.provider.CustomAuthenticationProvider;
+import com.econovation.whichbook_user.infra.config.security.filter.CustomAuthenticationFilter;
+import com.econovation.whichbook_user.infra.config.security.handler.CustomAuthenticationSuccessHandler;
+import com.econovation.whichbook_user.infra.config.security.provider.CustomAuthenticationProvider;
+import com.econovation.whichbook_user.infra.utils.CookieUtils;
+import com.econovation.whichbook_user.infra.utils.JwtTokenUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -33,16 +35,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 
     @Bean
-    public CustomAuthenticationFilter customAuthenticationFilter(ObjectMapper objectMapper) throws Exception {
+    public CustomAuthenticationFilter customAuthenticationFilter(ObjectMapper objectMapper, JwtTokenUtils jwtTokenUtils, CookieUtils cookieUtils) throws Exception {
         CustomAuthenticationFilter filter = new CustomAuthenticationFilter(authenticationManager(), objectMapper);
         filter.setFilterProcessesUrl("/user/login");
-        filter.setAuthenticationSuccessHandler(successHandler());
+        filter.setAuthenticationSuccessHandler(successHandler(jwtTokenUtils, cookieUtils));
         return filter;
     }
 
     @Bean
-    public CustomAuthenticationSuccessHandler successHandler() {
-        return new CustomAuthenticationSuccessHandler();
+    public CustomAuthenticationSuccessHandler successHandler(JwtTokenUtils jwtTokenUtils, CookieUtils cookieUtils) {
+        return new CustomAuthenticationSuccessHandler(jwtTokenUtils, cookieUtils);
     }
 
     @Bean

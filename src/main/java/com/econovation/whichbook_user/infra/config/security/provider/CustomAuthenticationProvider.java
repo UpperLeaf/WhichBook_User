@@ -1,12 +1,12 @@
-package com.econovation.whichbook_user.config.security.provider;
+package com.econovation.whichbook_user.infra.config.security.provider;
 
+import com.econovation.whichbook_user.domain.user.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -29,8 +29,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         if(!passwordEncoder.matches(password, userDetails.getPassword())) {
             throw new BadCredentialsException(email + "에 해당하는 비밀번호가 아닙니다.");
         }
-        User user = new User(userDetails.getUsername(), userDetails.getPassword(), userDetails.getAuthorities());
-        return new UsernamePasswordAuthenticationToken(user, user.getPassword());
+        return new UsernamePasswordAuthenticationToken(userDetails, userDetails.getPassword());
     }
 
     @Override

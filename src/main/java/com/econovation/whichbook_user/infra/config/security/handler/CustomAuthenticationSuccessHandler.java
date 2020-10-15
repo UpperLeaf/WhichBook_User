@@ -1,7 +1,11 @@
-package com.econovation.whichbook_user.config.security.handler;
+package com.econovation.whichbook_user.infra.config.security.handler;
 
+import com.econovation.whichbook_user.domain.user.User;
+import com.econovation.whichbook_user.infra.utils.CookieUtils;
+import com.econovation.whichbook_user.infra.utils.JwtTokenUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 
 import javax.servlet.ServletException;
@@ -14,11 +18,15 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class CustomAuthenticationSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler {
 
+    private final JwtTokenUtils jwtTokenUtils;
+    private final CookieUtils cookieUtils;
+
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws ServletException, IOException {
-        Cookie cookie = new Cookie("TEST_TOKEN_ABCD", "TEST TOKEN VALUE");
-        response.addCookie(cookie);
-
+        UserDetails userDetails = (UserDetails)authentication.getPrincipal();
+        String token = jwtTokenUtils.createToken(userDetails.getUsername());
+        Cookie jwtCookie = cookieUtils.create(CookieUtils.CookieType.JWT_TOKEN, token);
+        response.addCookie(jwtCookie);
         redirectPrevPage(request, response, authentication);
     }
 
