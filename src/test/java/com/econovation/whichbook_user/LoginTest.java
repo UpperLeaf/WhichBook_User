@@ -29,7 +29,7 @@ public class LoginTest {
     MockMvc mockMvc;
 
     @Transactional
-    @DisplayName("로그인 테스트")
+    @DisplayName("로그인 테스트 - 성공")
     @Test
     public void loginTest() throws Exception {
 
@@ -50,6 +50,31 @@ public class LoginTest {
                 .content(json)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(cookie().exists("JWT-TOKEN"));
+        
+    }
+
+    @Transactional
+    @DisplayName("로그인 테스트 - 실패")
+    @Test
+    public void loginTestWithFailure() throws Exception {
+
+        SignUpRequestDto requestDto = new SignUpRequestDto();
+        requestDto.setUsername("upperleaf");
+        requestDto.setEmail("test@email.com");
+        requestDto.setPassword("12345678");
+
+        userServiceImpl.signUpUser(requestDto);
+
+        LoginDto loginDto = new LoginDto();
+        loginDto.setEmail("test@email.com");
+        loginDto.setPassword("1234567");
+
+        String json = objectMapper.writeValueAsString(loginDto);
+
+        mockMvc.perform(post("/user/login")
+                .content(json)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isUnauthorized());
     }
 
 

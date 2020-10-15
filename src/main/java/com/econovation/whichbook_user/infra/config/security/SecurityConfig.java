@@ -1,8 +1,8 @@
 package com.econovation.whichbook_user.infra.config.security;
 
-import com.econovation.whichbook_user.infra.config.security.filter.CustomAuthenticationFilter;
-import com.econovation.whichbook_user.infra.config.security.handler.CustomAuthenticationSuccessHandler;
-import com.econovation.whichbook_user.infra.config.security.provider.CustomAuthenticationProvider;
+import com.econovation.whichbook_user.infra.config.security.filter.LoginAuthenticationFilter;
+import com.econovation.whichbook_user.infra.config.security.handler.LoginSuccessHandler;
+import com.econovation.whichbook_user.infra.config.security.provider.LoginAuthenticationProvider;
 import com.econovation.whichbook_user.infra.utils.CookieUtils;
 import com.econovation.whichbook_user.infra.utils.JwtTokenUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -28,6 +28,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .formLogin().disable().csrf().disable()
+                .httpBasic().disable()
                 .authorizeRequests(authorize -> authorize
                         .mvcMatchers("/auth/**", "/user/signup", "/user/login").permitAll()
                         .anyRequest().authenticated());
@@ -35,21 +36,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 
     @Bean
-    public CustomAuthenticationFilter customAuthenticationFilter(ObjectMapper objectMapper, JwtTokenUtils jwtTokenUtils, CookieUtils cookieUtils) throws Exception {
-        CustomAuthenticationFilter filter = new CustomAuthenticationFilter(authenticationManager(), objectMapper);
+    public LoginAuthenticationFilter customLoginAuthenticationFilter(ObjectMapper objectMapper, JwtTokenUtils jwtTokenUtils, CookieUtils cookieUtils) throws Exception {
+        LoginAuthenticationFilter filter = new LoginAuthenticationFilter(authenticationManager(), objectMapper);
         filter.setFilterProcessesUrl("/user/login");
         filter.setAuthenticationSuccessHandler(successHandler(jwtTokenUtils, cookieUtils));
         return filter;
     }
 
     @Bean
-    public CustomAuthenticationSuccessHandler successHandler(JwtTokenUtils jwtTokenUtils, CookieUtils cookieUtils) {
-        return new CustomAuthenticationSuccessHandler(jwtTokenUtils, cookieUtils);
+    public LoginSuccessHandler successHandler(JwtTokenUtils jwtTokenUtils, CookieUtils cookieUtils) {
+        return new LoginSuccessHandler(jwtTokenUtils, cookieUtils);
     }
 
     @Bean
-    public CustomAuthenticationProvider customAuthenticationProvider(UserDetailsService userServiceImpl) {
-        return new CustomAuthenticationProvider(userServiceImpl, passwordEncoder());
+    public LoginAuthenticationProvider loginAuthenticationProvider(UserDetailsService userServiceImpl) {
+        return new LoginAuthenticationProvider(userServiceImpl, passwordEncoder());
     }
 
     @Bean
