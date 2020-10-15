@@ -1,4 +1,4 @@
-package com.econovation.whichbook_user.config.handler;
+package com.econovation.whichbook_user.config.security.handler;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;

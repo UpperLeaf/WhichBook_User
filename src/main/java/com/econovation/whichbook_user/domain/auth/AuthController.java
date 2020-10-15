@@ -1,4 +1,4 @@
-package com.econovation.whichbook_user.auth;
+package com.econovation.whichbook_user.domain.auth;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;

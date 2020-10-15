@@ -1,15 +1,13 @@
 package com.econovation.whichbook_user;
 
-import com.econovation.whichbook_user.user.dto.SignUpRequestDto;
-import com.econovation.whichbook_user.user.service.UserService;
-import com.fasterxml.jackson.core.JsonProcessingException;
+import com.econovation.whichbook_user.domain.user.dto.SignUpRequestDto;
+import com.econovation.whichbook_user.domain.user.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;

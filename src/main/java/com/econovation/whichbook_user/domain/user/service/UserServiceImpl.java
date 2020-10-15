@@ -1,8 +1,8 @@
-package com.econovation.whichbook_user.user.service;
+package com.econovation.whichbook_user.domain.user.service;
 
-import com.econovation.whichbook_user.user.User;
-import com.econovation.whichbook_user.user.UserRepository;
-import com.econovation.whichbook_user.user.dto.SignUpRequestDto;
+import com.econovation.whichbook_user.domain.user.User;
+import com.econovation.whichbook_user.domain.user.UserRepository;
+import com.econovation.whichbook_user.domain.user.dto.SignUpRequestDto;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

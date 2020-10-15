@@ -1,4 +1,4 @@
-package com.econovation.whichbook_user.user;
+package com.econovation.whichbook_user.domain.user;
 
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;

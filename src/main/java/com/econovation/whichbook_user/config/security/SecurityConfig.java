@@ -1,8 +1,8 @@
-package com.econovation.whichbook_user.config;
+package com.econovation.whichbook_user.config.security;
 
-import com.econovation.whichbook_user.config.filter.CustomAuthenticationFilter;
-import com.econovation.whichbook_user.config.handler.CustomAuthenticationSuccessHandler;
-import com.econovation.whichbook_user.config.provider.CustomAuthenticationProvider;
+import com.econovation.whichbook_user.config.security.filter.CustomAuthenticationFilter;
+import com.econovation.whichbook_user.config.security.handler.CustomAuthenticationSuccessHandler;
+import com.econovation.whichbook_user.config.security.provider.CustomAuthenticationProvider;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;

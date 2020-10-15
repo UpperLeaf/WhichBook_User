@@ -1,8 +1,8 @@
-package com.econovation.whichbook_user.user.service;
+package com.econovation.whichbook_user.domain.user.service;
 
-import com.econovation.whichbook_user.user.User;
-import com.econovation.whichbook_user.user.UserRepository;
-import com.econovation.whichbook_user.user.dto.SignUpRequestDto;
+import com.econovation.whichbook_user.domain.user.User;
+import com.econovation.whichbook_user.domain.user.UserRepository;
+import com.econovation.whichbook_user.domain.user.dto.SignUpRequestDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

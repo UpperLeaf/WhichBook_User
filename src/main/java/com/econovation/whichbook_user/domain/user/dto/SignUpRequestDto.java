@@ -1,6 +1,6 @@
-package com.econovation.whichbook_user.user.dto;
+package com.econovation.whichbook_user.domain.user.dto;
 
-import com.econovation.whichbook_user.user.User;
+import com.econovation.whichbook_user.domain.user.User;
 import lombok.Data;
 import org.springframework.security.crypto.password.PasswordEncoder;
 

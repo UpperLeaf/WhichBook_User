@@ -1,7 +1,7 @@
-package com.econovation.whichbook_user.user.controller;
+package com.econovation.whichbook_user.domain.user.controller;
 
-import com.econovation.whichbook_user.user.dto.SignUpRequestDto;
-import com.econovation.whichbook_user.user.service.UserService;
+import com.econovation.whichbook_user.domain.user.dto.SignUpRequestDto;
+import com.econovation.whichbook_user.domain.user.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

@@ -1,4 +1,4 @@
-package com.econovation.whichbook_user.config.provider;
+package com.econovation.whichbook_user.config.security.provider;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationProvider;

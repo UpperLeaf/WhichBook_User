@@ -1,6 +1,6 @@
-package com.econovation.whichbook_user.config.filter;
+package com.econovation.whichbook_user.config.security.filter;
 
-import com.econovation.whichbook_user.user.dto.SignUpRequestDto;
+import com.econovation.whichbook_user.domain.user.dto.SignUpRequestDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
