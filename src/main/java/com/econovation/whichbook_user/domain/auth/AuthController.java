@@ -10,7 +10,7 @@ public class AuthController {
 
     @GetMapping("/auth")
     public String authorizeUserGet() {
-
+        //TODO auth 요청시 Token 또는 Refresh Token을 확인하여 인증할것.
         return "asdfasdfasd";
     }
 

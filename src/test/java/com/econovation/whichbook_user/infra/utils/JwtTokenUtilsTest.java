@@ -24,7 +24,7 @@ class JwtTokenUtilsTest {
     @DisplayName("토큰 생성 및 Parse 테스트")
     @Test
     public void createTokenTest() {
-        String token = utils.createToken("test@email.com");
+        String token = utils.createToken(CookieUtils.CookieType.JWT_TOKEN, "test@email.com");
         String subject = utils.getSubject(token);
         System.out.println(token);
         assertTrue(Jwts.parser().isSigned(token));

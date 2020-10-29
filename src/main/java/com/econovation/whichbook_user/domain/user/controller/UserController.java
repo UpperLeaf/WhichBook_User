@@ -25,6 +25,4 @@ public class UserController {
         Long userId = userService.signUpUser(dto);
         return ResponseEntity.ok(userId);
     }
-
-
 }
