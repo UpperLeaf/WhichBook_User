@@ -86,7 +86,7 @@ public class LoginTest {
         //TODO 로그아웃시 Token을 만료시킬 수 없다. Logout로직을 작성해야한다.
         // 또한 로그인했을때 Redis에 저장되어있을 Refresh-Token을, 로그아웃시에 삭제한다.
         mockMvc.perform(get("/user/logout")
-                .header("Authentication", "token auth value"))
+                .header("Authorization", "token auth value"))
                 .andExpect(status().isOk())
                 .andExpect(content().string("token auth value is deleted"));
 

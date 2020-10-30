@@ -69,7 +69,7 @@ public class UserController {
 
     @GetMapping("/logout")
     public ResponseEntity<?> logoutUser(HttpServletRequest servletRequest){
-        String token = servletRequest.getHeader("Authentication");
+        String token = servletRequest.getHeader("Authorization");
         tokenService.deleteToken(token);
         log.info(token + " is deleted");
         return ResponseEntity.ok(token + " is deleted");
