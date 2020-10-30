@@ -24,11 +24,17 @@ class JwtTokenUtilsTest {
     @DisplayName("토큰 생성 및 Parse 테스트")
     @Test
     public void createTokenTest() {
-        String token = utils.createToken(CookieUtils.CookieType.JWT_TOKEN, "test@email.com");
+        String token = utils.createToken(JwtTokenUtils.JwtTokenType.ACCESS_TOKEN, "test@email.com");
         String subject = utils.getSubject(token);
-        System.out.println(token);
+
+        String email = (String)utils.getClaimValue(token, "email");
+        Integer expiration = (Integer)utils.getClaimValue(token, "expiration");
+
         assertTrue(Jwts.parser().isSigned(token));
-        assertEquals("test@email.com", subject);
+
+        assertEquals("test@email.com", email);
+        assertEquals("Access-Token", subject);
+        assertNotNull(expiration);
     }
 
 }

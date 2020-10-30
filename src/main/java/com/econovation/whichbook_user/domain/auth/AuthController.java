@@ -8,9 +8,16 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class AuthController {
 
+    /*
+    * TODO
+    *  HttpServletRequest에서  JWT-TOKEN, JWT-Refresh 토큰을 추출한다.
+    *  각 추출한 토큰에서 JWT-TOKEN이 있을경우 응답으로 200 상태코드를 전송한다.
+    *  
+    *
+    */
     @GetMapping("/auth")
     public String authorizeUserGet() {
-        //TODO auth 요청시 Token 또는 Refresh Token을 확인하여 인증할것.
+
         return "asdfasdfasd";
     }
 
