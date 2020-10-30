@@ -12,7 +12,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Arrays;
 
-@Component
 @RequiredArgsConstructor
 public class JwtLogoutHandler implements LogoutHandler {
 
@@ -20,6 +19,8 @@ public class JwtLogoutHandler implements LogoutHandler {
 
     @Override
     public void logout(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
+        // TODO Cookie를 사용하지 않는게 나을것 같다.
+        //  쿠키 사용을 빼고 Authorization 헤더의 토큰값을 검사하는것으로 변경한다.
         Cookie[] cookies = request.getCookies();
 
         Arrays.stream(cookies).forEach(cookie -> {

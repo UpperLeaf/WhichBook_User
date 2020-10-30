@@ -3,23 +3,18 @@ package com.econovation.whichbook_user.infra.config.security;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpStatus;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.logout.HttpStatusReturningLogoutSuccessHandler;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
 
 @RequiredArgsConstructor
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-
-    private final LogoutHandler jwtLogoutHandler;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -28,17 +23,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .formLogin().disable().csrf().disable()
                 .httpBasic().disable()
-                .logout().logoutUrl("/user/logout").addLogoutHandler(jwtLogoutHandler)
-                .logoutSuccessHandler(new HttpStatusReturningLogoutSuccessHandler(HttpStatus.OK))
-                .and()
-                    .authorizeRequests(authorize -> authorize
-                        .mvcMatchers("/auth/**", "/user/signup", "/user/login").permitAll()
+                .authorizeRequests(authorize -> authorize
+                        .mvcMatchers("/auth/**", "/user/signup", "/user/login", "/user/logout").permitAll()
                         .anyRequest().authenticated());
-    }
-
-    @Bean
-    public AuthenticationManager getAuthenticationManager() throws Exception {
-        return authenticationManager();
     }
 
     @Bean

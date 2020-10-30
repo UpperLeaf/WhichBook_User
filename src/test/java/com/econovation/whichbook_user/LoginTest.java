@@ -10,8 +10,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Profile;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,6 +21,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+@ActiveProfiles("test")
 @AutoConfigureMockMvc
 @SpringBootTest
 public class LoginTest {
@@ -48,7 +51,9 @@ public class LoginTest {
                 .content(json)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("access-Token").exists())
-                .andExpect(jsonPath("refresh-Token").exists());
+                .andExpect(jsonPath("access-Token").value("test@email.com"))
+                .andExpect(jsonPath("refresh-Token").exists())
+                .andExpect(jsonPath("refresh-Token").value("test@email.com"));
 
 
     }
@@ -80,6 +85,10 @@ public class LoginTest {
     public void logoutTestWithSuccess() throws Exception {
         //TODO 로그아웃시 Token을 만료시킬 수 없다. Logout로직을 작성해야한다.
         // 또한 로그인했을때 Redis에 저장되어있을 Refresh-Token을, 로그아웃시에 삭제한다.
+        mockMvc.perform(get("/user/logout")
+                .header("Authentication", "token auth value"))
+                .andExpect(status().isOk())
+                .andExpect(content().string("token auth value is deleted"));
 
     }
 

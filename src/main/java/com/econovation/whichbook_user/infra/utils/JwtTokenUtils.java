@@ -6,11 +6,9 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.sql.OracleJoinFragment;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import javax.swing.event.CaretListener;
 import javax.xml.bind.DatatypeConverter;
 import java.util.Date;
 
