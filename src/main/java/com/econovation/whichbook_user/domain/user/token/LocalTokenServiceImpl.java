@@ -25,6 +25,11 @@ public class LocalTokenServiceImpl implements TokenService {
     }
 
     @Override
+    public boolean isTokenExpired(String token) {
+        return false;
+    }
+
+    @Override
     public void updateToken() {
 
     }

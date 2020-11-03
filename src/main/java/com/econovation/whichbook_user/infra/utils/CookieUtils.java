@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 
 import javax.servlet.http.Cookie;
 
+//아마 사용안할거같음.
 @Component
 public class CookieUtils {
 

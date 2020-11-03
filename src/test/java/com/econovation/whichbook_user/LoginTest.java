@@ -36,9 +36,7 @@ public class LoginTest {
     @DisplayName("로그인 테스트 - 성공")
     @Test
     public void loginTest() throws Exception {
-
         SignUpRequestDto requestDto = getSignUpRequestDto();
-
         userServiceImpl.signUpUser(requestDto);
 
         LoginDto loginDto = new LoginDto();
@@ -54,8 +52,6 @@ public class LoginTest {
                 .andExpect(jsonPath("access-Token").value("test@email.com"))
                 .andExpect(jsonPath("refresh-Token").exists())
                 .andExpect(jsonPath("refresh-Token").value("test@email.com"));
-
-
     }
 
     @Transactional

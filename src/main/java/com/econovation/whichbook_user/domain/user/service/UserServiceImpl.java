@@ -22,9 +22,16 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
+    public boolean existByEmail(String email) {
+        return userRepository.existsByEmail(email);
+    }
+
+    @Override
     public Long signUpUser(SignUpRequestDto dto) {
         User user = dto.toUser(passwordEncoder);
         return userRepository.save(user).getId();
+        //Local H2 DB
+        //Prod Maria DB
     }
 
     @Override
@@ -39,7 +46,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException(email + "에 해당하는 유저가 없습니다"));
-
         return user;
     }
 }

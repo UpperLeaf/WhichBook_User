@@ -23,6 +23,7 @@ public class TokenServiceImpl implements TokenService{
     @Override
     public String createToken(JwtTokenUtils.JwtTokenType tokenType, String value) {
         String token = jwtTokenUtils.createToken(tokenType, value);
+
         if(tokenType == JwtTokenUtils.JwtTokenType.REFRESH_TOKEN) {
             ValueOperations<String, String> values = redisTemplate.opsForValue();
             Duration duration = Duration.ofSeconds(jwtTokenUtils.getJwtRefreshTokenExpireLength());
@@ -35,6 +36,11 @@ public class TokenServiceImpl implements TokenService{
     @Override
     public void deleteToken(String token) {
         redisTemplate.delete(token);
+    }
+
+    @Override
+    public boolean isTokenExpired(String token) {
+        return jwtTokenUtils.isTokenExpired(token);
     }
 
     //TODO Refresh Token을 갱신해야할때가 있다면 해당 메서드를 이용해서 갱신하자.

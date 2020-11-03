@@ -29,6 +29,8 @@ class JwtTokenUtilsTest {
         String token = utils.createToken(JwtTokenUtils.JwtTokenType.ACCESS_TOKEN, "test@email.com");
         String subject = utils.getSubject(token);
 
+        System.out.println(token);
+
         String email = (String)utils.getClaimValue(token, "email");
         Integer expiration = (Integer)utils.getClaimValue(token, "expiration");
 
