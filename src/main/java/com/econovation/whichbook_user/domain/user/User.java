@@ -5,10 +5,10 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.UniqueConstraint;
 import java.util.Collection;
 import java.util.List;
 
@@ -19,9 +19,10 @@ public class User implements UserDetails {
     @Id @GeneratedValue
     private Long id;
 
+    @Column(unique = true)
     private String email;
 
-    private String name;
+    private String nickname;
 
     private String password;
 

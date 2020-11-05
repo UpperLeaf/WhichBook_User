@@ -17,16 +17,17 @@ public class AuthController {
 
     private final TokenService tokenService;
     private final ObjectMapper objectMapper;
+    private final AuthPolicy authPolicy;
 
-    public AuthController(TokenService tokenService, ObjectMapper objectMapper) {
+    public AuthController(TokenService tokenService, ObjectMapper objectMapper, AuthPolicy authPolicy) {
         this.tokenService = tokenService;
         this.objectMapper = objectMapper;
+        this.authPolicy = authPolicy;
     }
 
     @GetMapping("/auth")
     public ResponseEntity<?> authorizeUserGet(HttpServletRequest servletRequest) {
-        String token = servletRequest.getHeader("Authorization");
-        if(token == null || !tokenService.isValidToken(token)) {
+        if(!authPolicy.authorize(servletRequest)){
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
         return ResponseEntity.ok("Authorize Success");
@@ -34,12 +35,13 @@ public class AuthController {
 
     @GetMapping("/auth/refresh")
     public ResponseEntity<?> refreshAccessToken(HttpServletRequest servletRequest) {
-        String token = servletRequest.getHeader("Authorization");
-        if(token == null || !tokenService.isValidToken(token)) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("ReLogin Required");
+        if(!authPolicy.authorize(servletRequest)){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
-        String email = tokenService.getClaimValue(token, "email");
+
+        String email = tokenService.getClaimValue(servletRequest.getHeader("Authorization"), "email");
         String accessToken = tokenService.createToken(JwtTokenUtils.JwtTokenType.ACCESS_TOKEN, email);
+
         try {
             String json = objectMapper.writeValueAsString(Map.of("accessToken", accessToken));
             return ResponseEntity.status(HttpStatus.OK).body(json);

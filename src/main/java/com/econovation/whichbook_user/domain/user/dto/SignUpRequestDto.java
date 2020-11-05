@@ -7,14 +7,14 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Data
 public class SignUpRequestDto {
     private String email;
-    private String username;
+    private String nickname;
     private String password;
     private String passwordConfirm;
 
     public User toUser(PasswordEncoder encoder) {
         return User.builder()
                 .email(email)
-                .name(username)
+                .nickname(nickname)
                 .password(encoder.encode(password))
                 .build();
     }

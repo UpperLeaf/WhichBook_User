@@ -29,7 +29,7 @@ class UserControllerTest {
     @BeforeEach
     public void beforeEach() {
         requestDto = new SignUpRequestDto();
-        requestDto.setUsername("upperleaf");
+        requestDto.setNickname("upperleaf");
         requestDto.setEmail("test@email.com");
         requestDto.setPassword("12345678");
         requestDto.setPasswordConfirm("12345678");

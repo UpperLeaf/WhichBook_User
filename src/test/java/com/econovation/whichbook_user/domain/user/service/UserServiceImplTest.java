@@ -32,7 +32,7 @@ class UserServiceImplTest {
     @BeforeEach
     public void beforeEach() {
         requestDto = new SignUpRequestDto();
-        requestDto.setUsername("upperleaf");
+        requestDto.setNickname("upperleaf");
         requestDto.setEmail("test@email.com");
         requestDto.setPassword("12345678");
     }
@@ -47,7 +47,7 @@ class UserServiceImplTest {
         User user = userRepository.findById(id).get();
 
         assertThat(requestDto.getEmail(), is(user.getEmail()));
-        assertThat(requestDto.getUsername(), is(user.getName()));
+        assertThat(requestDto.getNickname(), is(user.getNickname()));
         assertThat(requestDto.getPassword(), is(not((user.getPassword()))));
     }
 
