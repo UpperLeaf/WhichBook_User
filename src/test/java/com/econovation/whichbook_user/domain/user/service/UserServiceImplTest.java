@@ -39,7 +39,7 @@ class UserServiceImplTest {
 
 
     @Transactional
-    @DisplayName("회원가입 성공")
+    @DisplayName("서비스 계층 회원가입 성공")
     @Test
     public void signUpWithSuccess() {
         Long id = userService.signUpUser(requestDto);

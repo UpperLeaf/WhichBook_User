@@ -4,7 +4,9 @@ import com.econovation.whichbook_user.infra.utils.JwtTokenUtils;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
-@Profile({"local", "test"})
+import java.util.Date;
+
+@Profile("test")
 @Service
 public class LocalTokenServiceImpl implements TokenService {
     //TODO 로컬환경에서의 TokenService이다.
@@ -25,12 +27,13 @@ public class LocalTokenServiceImpl implements TokenService {
     }
 
     @Override
-    public boolean isTokenExpired(String token) {
-        return false;
+    public Date getTokenExpiration(String token) {
+        return new Date();
     }
 
     @Override
-    public void updateToken() {
-
+    public boolean isValidToken(String token) {
+        return true;
     }
+
 }

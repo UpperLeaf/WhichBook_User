@@ -51,7 +51,6 @@ public class UserController {
         if(errors.hasErrors()) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(errors.getFieldError().getField());
         }
-
         Long userId = userService.signUpUser(signUpDto);
         try {
             log.info("sign up user Id : " + userId);
@@ -71,17 +70,17 @@ public class UserController {
             String accessToken = tokenService.createToken(JwtTokenUtils.JwtTokenType.ACCESS_TOKEN, loginDto.getEmail());
             String refreshToken = tokenService.createToken(JwtTokenUtils.JwtTokenType.REFRESH_TOKEN, loginDto.getEmail());
             try {
-                Map<String, String> map = Map.of("access-Token", accessToken, "refresh-Token", refreshToken);
+                Map<String, String> map = Map.of("accessToken", accessToken, "refreshToken", refreshToken);
                 String json = objectMapper.writeValueAsString(map);
+                System.out.println(json);
                 return ResponseEntity.ok(json);
-            }catch (JsonProcessingException e){
+            }catch (JsonProcessingException e) {
                 e.printStackTrace();
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
             }
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
-
 
     @GetMapping("/logout")
     public ResponseEntity<?> logoutUser(HttpServletRequest servletRequest){

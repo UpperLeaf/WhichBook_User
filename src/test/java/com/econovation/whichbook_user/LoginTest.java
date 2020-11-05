@@ -48,10 +48,10 @@ public class LoginTest {
         mockMvc.perform(post("/user/login")
                 .content(json)
                 .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("access-Token").exists())
-                .andExpect(jsonPath("access-Token").value("test@email.com"))
-                .andExpect(jsonPath("refresh-Token").exists())
-                .andExpect(jsonPath("refresh-Token").value("test@email.com"));
+                .andExpect(jsonPath("accessToken").exists())
+                .andExpect(jsonPath("accessToken").value("test@email.com"))
+                .andExpect(jsonPath("refreshToken").exists())
+                .andExpect(jsonPath("refreshToken").value("test@email.com"));
     }
 
     @Transactional

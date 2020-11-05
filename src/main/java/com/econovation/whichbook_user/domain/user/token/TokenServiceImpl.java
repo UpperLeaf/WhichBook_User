@@ -1,14 +1,17 @@
 package com.econovation.whichbook_user.domain.user.token;
 
 import com.econovation.whichbook_user.infra.utils.JwtTokenUtils;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.SignatureException;
 import org.springframework.context.annotation.Profile;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
+import java.util.Date;
 
-@Profile("prod")
+@Profile({"local", "prod"})
 @Service
 public class TokenServiceImpl implements TokenService{
 
@@ -23,12 +26,12 @@ public class TokenServiceImpl implements TokenService{
     @Override
     public String createToken(JwtTokenUtils.JwtTokenType tokenType, String value) {
         String token = jwtTokenUtils.createToken(tokenType, value);
-
-        if(tokenType == JwtTokenUtils.JwtTokenType.REFRESH_TOKEN) {
-            ValueOperations<String, String> values = redisTemplate.opsForValue();
-            Duration duration = Duration.ofSeconds(jwtTokenUtils.getJwtRefreshTokenExpireLength());
-            values.set(token, value, duration);
-        }
+        //TODO Redis 환경 구축해야함
+//        if(tokenType == JwtTokenUtils.JwtTokenType.REFRESH_TOKEN) {
+//            ValueOperations<String, String> values = redisTemplate.opsForValue();
+//            Duration duration = Duration.ofSeconds(jwtTokenUtils.getJwtRefreshTokenExpireLength());
+//            values.set(token, value, duration);
+//        }
         return token;
     }
 
@@ -39,13 +42,18 @@ public class TokenServiceImpl implements TokenService{
     }
 
     @Override
-    public boolean isTokenExpired(String token) {
-        return jwtTokenUtils.isTokenExpired(token);
+    public Date getTokenExpiration(String token) {
+        return jwtTokenUtils.getTokenExpiration(token);
     }
 
-    //TODO Refresh Token을 갱신해야할때가 있다면 해당 메서드를 이용해서 갱신하자.
     @Override
-    public void updateToken() {
-
+    public boolean isValidToken(String token) {
+        try{
+            jwtTokenUtils.extractAllClaims(token);
+        }catch (ExpiredJwtException | SignatureException ex){
+            return false;
+        }
+        return true;
     }
+
 }

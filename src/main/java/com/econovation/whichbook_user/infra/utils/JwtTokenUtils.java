@@ -42,6 +42,7 @@ public class JwtTokenUtils {
         if(jwtTokenType == JwtTokenType.ACCESS_TOKEN){
             claims.setSubject("Access-Token");
             claims.setExpiration(new Date(now.getTime() + jwtTokenExpireLength));
+
             claims.setIssuedAt(now);
             claims.put("email", value);
             claims.put("expiration", jwtTokenExpireLength);
@@ -72,12 +73,12 @@ public class JwtTokenUtils {
         return claims.get(key);
     }
 
-    public boolean isTokenExpired(String token) {
+    public Date getTokenExpiration(String token) {
         Claims claims = extractAllClaims(token);
-        return claims.getExpiration().before(new Date());
+        return claims.getExpiration();
     }
 
-    private Claims extractAllClaims(String token) {
+    public Claims extractAllClaims(String token) {
         Claims claims= Jwts.parser()
                 .setSigningKey(DatatypeConverter.parseBase64Binary(secretKey))
                 .parseClaimsJws(token).getBody();
