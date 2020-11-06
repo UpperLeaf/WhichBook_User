@@ -17,7 +17,12 @@ public class HttpHeaderAuthPolicy implements AuthPolicy{
     @Override
     public boolean authorize(HttpServletRequest servletRequest) {
         String token = servletRequest.getHeader("Authorization");
-        if(token == null || !tokenService.isValidToken(token)) {
+        return authorize(token);
+    }
+
+    @Override
+    public boolean authorize(String token) {
+        if (token == null || !tokenService.isValidToken(token)){
             return false;
         }
         return true;

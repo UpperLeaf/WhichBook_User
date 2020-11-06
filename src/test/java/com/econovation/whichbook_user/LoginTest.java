@@ -37,7 +37,7 @@ public class LoginTest {
     @Test
     public void loginTest() throws Exception {
         SignUpRequestDto requestDto = getSignUpRequestDto();
-        userServiceImpl.signUpUser(requestDto);
+        userServiceImpl.createUser(requestDto);
 
         LoginDto loginDto = new LoginDto();
         loginDto.setEmail("test@email.com");
@@ -59,7 +59,7 @@ public class LoginTest {
 
         SignUpRequestDto requestDto = getSignUpRequestDto();
 
-        userServiceImpl.signUpUser(requestDto);
+        userServiceImpl.createUser(requestDto);
 
         LoginDto loginDto = new LoginDto();
         loginDto.setEmail("test@email.com");

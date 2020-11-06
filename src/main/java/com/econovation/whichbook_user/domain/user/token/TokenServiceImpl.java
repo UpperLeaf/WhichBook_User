@@ -48,7 +48,7 @@ public class TokenServiceImpl implements TokenService{
 
     @Override
     public String getClaimValue(String token, String key) {
-        return null;
+        return (String)jwtTokenUtils.getClaimValue(token, key);
     }
 
     @Override

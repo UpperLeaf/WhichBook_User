@@ -3,12 +3,14 @@ package com.econovation.whichbook_user.domain.user.controller;
 import com.econovation.whichbook_user.domain.user.dto.LoginRequestDto;
 import com.econovation.whichbook_user.domain.user.dto.SignUpRequestDto;
 import com.econovation.whichbook_user.domain.user.dto.SignupRequestValidator;
+import com.econovation.whichbook_user.domain.user.dto.UserResponseDto;
 import com.econovation.whichbook_user.domain.user.token.TokenService;
 import com.econovation.whichbook_user.domain.user.service.UserService;
 import com.econovation.whichbook_user.infra.utils.JwtTokenUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
+import java.util.Optional;
 
 @Slf4j
 @RequestMapping(value = "/user", produces = "application/json")
@@ -41,9 +44,19 @@ public class UserController {
         dataBinder.addValidators(validator);
     }
 
-    @GetMapping("/{userId}")
-    public ResponseEntity<?> getUserInfo(@PathVariable Long userId) {
-        return ResponseEntity.ok(userId.toString());
+    @GetMapping("/info")
+    public ResponseEntity<?> getUserInfo(HttpServletRequest httpServletRequest) {
+        Optional<UserResponseDto> responseDto =
+                userService.getUserByToken(httpServletRequest.getHeader("Authorization"));
+        if(responseDto.isPresent()){
+            try {
+                String json = objectMapper.writeValueAsString(responseDto.get());
+                return ResponseEntity.status(HttpStatus.OK).body(json);
+            }catch (JsonProcessingException e){
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            }
+        }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
 
     @PostMapping("/signup")
@@ -51,7 +64,7 @@ public class UserController {
         if(errors.hasErrors()) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(errors.getFieldError().getField());
         }
-        Long userId = userService.signUpUser(signUpDto);
+        Long userId = userService.createUser(signUpDto);
         try {
             log.info("sign up user Id : " + userId);
             String json = objectMapper.writeValueAsString(userId);

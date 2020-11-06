@@ -26,7 +26,7 @@ public class AuthController {
     }
 
     @GetMapping("/auth")
-    public ResponseEntity<?> authorizeUserGet(HttpServletRequest servletRequest) {
+    public ResponseEntity<?> authorizeWithToken(HttpServletRequest servletRequest) {
         if(!authPolicy.authorize(servletRequest)){
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }

@@ -4,4 +4,5 @@ import javax.servlet.http.HttpServletRequest;
 
 public interface AuthPolicy {
     boolean authorize(HttpServletRequest httpServletRequest);
+    boolean authorize(String token);
 }
