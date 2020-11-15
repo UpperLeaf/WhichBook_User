@@ -10,15 +10,18 @@ import com.econovation.whichbook_user.infra.utils.JwtTokenUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.config.web.servlet.headers.HttpStrictTransportSecurityDsl;
 import org.springframework.validation.Errors;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
+import java.net.URI;
 import java.util.Map;
 import java.util.Optional;
 
@@ -46,17 +49,8 @@ public class UserController {
 
     @GetMapping("/info")
     public ResponseEntity<?> getUserInfo(HttpServletRequest httpServletRequest) {
-        Optional<UserResponseDto> responseDto =
-                userService.getUserByToken(httpServletRequest.getHeader("Authorization"));
-        if(responseDto.isPresent()){
-            try {
-                String json = objectMapper.writeValueAsString(responseDto.get());
-                return ResponseEntity.status(HttpStatus.OK).body(json);
-            }catch (JsonProcessingException e){
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-            }
-        }
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        UserResponseDto responseDto = userService.getUserByToken(httpServletRequest.getHeader("Authorization"));
+        return ResponseEntity.ok(responseDto);
     }
 
     @PostMapping("/signup")
@@ -65,34 +59,17 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(errors.getFieldError().getField());
         }
         Long userId = userService.createUser(signUpDto);
-        try {
-            log.info("sign up user Id : " + userId);
-            String json = objectMapper.writeValueAsString(userId);
-            return ResponseEntity.ok(json);
-        }catch (JsonProcessingException e){
-            e.printStackTrace();
-        }
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        return ResponseEntity.ok(userId);
     }
 
     @PostMapping("/login")
     public ResponseEntity<?> loginUser(@RequestBody LoginRequestDto loginDto) {
         log.info("try login : " + loginDto.getEmail());
-        if(userService.authorizeWithLoginDto(loginDto)){
-            log.info("authorize success : " +  loginDto.getEmail());
-            String accessToken = tokenService.createToken(JwtTokenUtils.JwtTokenType.ACCESS_TOKEN, loginDto.getEmail());
-            String refreshToken = tokenService.createToken(JwtTokenUtils.JwtTokenType.REFRESH_TOKEN, loginDto.getEmail());
-            try {
-                Map<String, String> map = Map.of("accessToken", accessToken, "refreshToken", refreshToken);
-                String json = objectMapper.writeValueAsString(map);
-                System.out.println(json);
-                return ResponseEntity.ok(json);
-            }catch (JsonProcessingException e) {
-                e.printStackTrace();
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-            }
-        }
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        userService.authorizeWithLoginDto(loginDto);
+        log.info("authorize Success : " + loginDto.getEmail());
+        String accessToken = tokenService.createToken(JwtTokenUtils.JwtTokenType.ACCESS_TOKEN, loginDto.getEmail());
+        String refreshToken = tokenService.createToken(JwtTokenUtils.JwtTokenType.REFRESH_TOKEN, loginDto.getEmail());
+        return ResponseEntity.ok(Map.of("accessToken", accessToken, "refreshToken", refreshToken));
     }
 
     @GetMapping("/logout")

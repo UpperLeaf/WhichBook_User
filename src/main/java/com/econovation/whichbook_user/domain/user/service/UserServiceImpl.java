@@ -1,6 +1,8 @@
 package com.econovation.whichbook_user.domain.user.service;
 
 import com.econovation.whichbook_user.domain.auth.IsAuthenticated;
+import com.econovation.whichbook_user.domain.exception.EmailNotFoundException;
+import com.econovation.whichbook_user.domain.exception.UnAuthorizedException;
 import com.econovation.whichbook_user.domain.user.User;
 import com.econovation.whichbook_user.domain.user.UserRepository;
 import com.econovation.whichbook_user.domain.user.dto.LoginRequestDto;
@@ -13,7 +15,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService, UserDetailsService {
@@ -36,10 +37,10 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @IsAuthenticated
     @Override
-    public Optional<UserResponseDto> getUserByToken(String token) {
+    public UserResponseDto getUserByToken(String token) {
         String email = tokenService.getClaimValue(token, "email");
-        User user = userRepository.findByEmail(email).orElseThrow(() -> new IllegalArgumentException("해당하는 Email이 없습니다"));
-        return Optional.of(UserResponseDto.of(user));
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new EmailNotFoundException("해당하는 Email이 없습니다"));
+        return UserResponseDto.of(user);
     }
 
     @Override
@@ -51,9 +52,15 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public boolean authorizeWithLoginDto(LoginRequestDto loginDto) {
         String userEmail = loginDto.getEmail();
+
         User user = userRepository.findByEmail(userEmail)
-                .orElseThrow(() -> new IllegalArgumentException(userEmail + "에 해당하는 이메일이 없습니다."));
-        return passwordEncoder.matches(loginDto.getPassword(), user.getPassword());
+                .orElseThrow(() -> new UnAuthorizedException(userEmail + "에 해당하는 이메일이 없습니다."));
+
+        if(!passwordEncoder.matches(loginDto.getPassword(), user.getPassword())) {
+            throw new UnAuthorizedException("비밀번호가 일치하지 않습니다.");
+        }
+
+        return true;
     }
 
     @Override

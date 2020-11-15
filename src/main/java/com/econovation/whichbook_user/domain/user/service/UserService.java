@@ -11,7 +11,7 @@ public interface UserService {
 
     boolean existByEmail(String email);
 
-    Optional<UserResponseDto> getUserByToken(String token);
+    UserResponseDto getUserByToken(String token);
 
     Long createUser(SignUpRequestDto dto);
 

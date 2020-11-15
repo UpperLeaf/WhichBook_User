@@ -1,5 +1,6 @@
 package com.econovation.whichbook_user.domain.user.service;
 
+import com.econovation.whichbook_user.domain.exception.UnAuthorizedException;
 import com.econovation.whichbook_user.domain.user.User;
 import com.econovation.whichbook_user.domain.user.UserRepository;
 import com.econovation.whichbook_user.domain.user.dto.SignUpRequestDto;
@@ -62,7 +63,7 @@ class UserServiceImplTest {
         userService.createUser(requestDto);
 
         String token = tokenService.createToken(JwtTokenUtils.JwtTokenType.ACCESS_TOKEN, email);
-        UserResponseDto user = userService.getUserByToken(token).get();
+        UserResponseDto user = userService.getUserByToken(token);
         assertEquals(user.getEmail(), email);
     }
 
@@ -74,10 +75,10 @@ class UserServiceImplTest {
 
         userService.createUser(requestDto);
 
-        Assertions.assertThrows(NullPointerException.class, () -> {
+        Assertions.assertThrows(UnAuthorizedException.class, () -> {
             String token = tokenService.createToken(JwtTokenUtils.JwtTokenType.ACCESS_TOKEN, email);
             token += "abcd";
-            UserResponseDto user = userService.getUserByToken(token).get();
+            UserResponseDto user = userService.getUserByToken(token);
         });
     }
 

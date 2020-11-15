@@ -23,8 +23,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin().disable().csrf().disable()
                 .httpBasic().disable()
                 .authorizeRequests(authorize -> authorize
-                        .mvcMatchers("/auth/**", "/user/signup", "/user/login", "/user/logout").permitAll()
-                        .anyRequest().authenticated());
+                        .anyRequest().permitAll());
     }
 
     @Bean
