@@ -7,23 +7,17 @@ import com.econovation.whichbook_user.domain.user.dto.UserResponseDto;
 import com.econovation.whichbook_user.domain.user.token.TokenService;
 import com.econovation.whichbook_user.domain.user.service.UserService;
 import com.econovation.whichbook_user.infra.utils.JwtTokenUtils;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.config.web.servlet.headers.HttpStrictTransportSecurityDsl;
 import org.springframework.validation.Errors;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
-import java.net.URI;
 import java.util.Map;
-import java.util.Optional;
 
 @Slf4j
 @RequestMapping(value = "/user", produces = "application/json")

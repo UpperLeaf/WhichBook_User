@@ -15,13 +15,11 @@ import java.util.Date;
 public class TokenServiceImpl implements TokenService{
 
     private final JwtTokenUtils jwtTokenUtils;
-    private final StringRedisTemplate redisTemplate;
     private final RedisUtils redisUtils;
 
-    public TokenServiceImpl(JwtTokenUtils jwtTokenUtils, RedisUtils redisUtils, StringRedisTemplate redisTemplate) {
+    public TokenServiceImpl(JwtTokenUtils jwtTokenUtils, RedisUtils redisUtils) {
         this.jwtTokenUtils = jwtTokenUtils;
         this.redisUtils = redisUtils;
-        this.redisTemplate = redisTemplate;
     }
 
     @Override
