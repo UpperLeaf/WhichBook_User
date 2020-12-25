@@ -50,7 +50,7 @@ public class UserController {
     @PostMapping("/signup")
     public ResponseEntity<?> signUpUser(@RequestBody @Validated SignUpRequestDto signUpDto, Errors errors) {
         if(errors.hasErrors()) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(errors.getFieldError().getField());
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(errors.getFieldError());
         }
         Long userId = userService.createUser(signUpDto);
         return ResponseEntity.ok(userId);

@@ -7,6 +7,7 @@ import lombok.Data;
 public class UserResponseDto {
     String email;
     String nickname;
+    Long userId;
 
     public static UserResponseDto of(User user){
         if(user == null)
@@ -14,6 +15,7 @@ public class UserResponseDto {
         UserResponseDto userResponseDto = new UserResponseDto();
         userResponseDto.setEmail(user.getEmail());
         userResponseDto.setNickname(user.getNickname());
+        userResponseDto.setUserId(user.getId());
         return userResponseDto;
     }
 }
