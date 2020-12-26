@@ -7,6 +7,8 @@ import com.econovation.whichbook_user.domain.user.dto.UserResponseDto;
 
 public interface UserService {
 
+    String getUserNickname(Long id);
+
     boolean existByEmail(String email);
 
     UserResponseDto getUserByToken(String token);

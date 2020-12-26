@@ -26,13 +26,11 @@ public class UserController {
 
     private final UserService userService;
     private final TokenService tokenService;
-    private final ObjectMapper objectMapper;
     private final SignupRequestValidator validator;
 
-    public UserController(UserService userService, TokenService tokenService, ObjectMapper objectMapper, SignupRequestValidator validator) {
+    public UserController(UserService userService, TokenService tokenService, SignupRequestValidator validator) {
         this.userService = userService;
         this.tokenService = tokenService;
-        this.objectMapper = objectMapper;
         this.validator = validator;
     }
 
@@ -45,6 +43,12 @@ public class UserController {
     public ResponseEntity<?> getUserInfo(HttpServletRequest httpServletRequest) {
         UserResponseDto responseDto = userService.getUserByToken(httpServletRequest.getHeader("Authorization"));
         return ResponseEntity.ok(responseDto);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getUserName(@PathVariable Long id) {
+        String nickname = userService.getUserNickname(id);
+        return ResponseEntity.ok(nickname);
     }
 
     @PostMapping("/signup")

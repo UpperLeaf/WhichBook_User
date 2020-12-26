@@ -31,6 +31,12 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
 
     @Override
+    public String getUserNickname(Long id) {
+        User user = userRepository.findById(id).orElseThrow(IllegalArgumentException::new);
+        return user.getNickname();
+    }
+
+    @Override
     public boolean existByEmail(String email) {
         return userRepository.existsByEmail(email);
     }
